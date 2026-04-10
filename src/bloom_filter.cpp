@@ -17,7 +17,7 @@ size_t BloomFilter::computeM(size_t n,double p){
 size_t BloomFilter::computeK(size_t m, size_t n){
   return static_cast<size_t>(std::round((static_cast<double>(m) / static_cast<double>(n)) * std::log(2)));
 }
-std::vector<uint64_t> BloomFilter::getPositions(const std::string &key){
+std::vector<uint64_t> BloomFilter::getPositions(const std::string &key) const{
   uint64_t hashes[2];
   MurmurHash3_x64_128(key.c_str(),key.size(),42,hashes);
   uint64_t h1 = hashes[0];
