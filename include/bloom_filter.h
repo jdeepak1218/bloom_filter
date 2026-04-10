@@ -13,7 +13,7 @@ class BloomFilter{
   size_t n;
   size_t computeM(size_t n,double p);
   size_t computeK(size_t m,size_t n);
-  std::vector<uint64_t> getPosition(std::string key);
+  std::vector<uint64_t> getPositions(const std::string &key);
 
   public:
   BloomFilter(size_t n,double p);
