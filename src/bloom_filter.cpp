@@ -30,3 +30,18 @@ std::vector<uint64_t> BloomFilter::getPositions(const std::string &key){
   }
   return positions;
 }
+void BloomFilter::add(const std::string &key){
+  std::vector<uint64_t> positions = getPositions(key);
+  for(auto pos : positions){
+    bit_arr[pos] = true;
+  }
+}
+bool BloomFilter::contains(const std::string &key) const{
+  std::vector<uint64_t> positions = getPositions(key);
+  for(auto pos : positions){
+    if(!bit_arr[pos]){
+      return false;
+    }
+  }
+  return true;
+}
