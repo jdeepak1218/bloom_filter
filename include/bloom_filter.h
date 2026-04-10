@@ -20,6 +20,8 @@ class BloomFilter{
   void add(const std::string &key);
   bool contains(const std::string &key)const;
   double currentFPR()const;
+  size_t getM() const;
+  size_t getK() const;
   void serialize(const std::string &filename);
   void deserialize(const std::string &filename);
 };

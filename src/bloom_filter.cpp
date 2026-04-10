@@ -53,6 +53,8 @@ double BloomFilter::currentFPR()const{
   double fpr = std::pow(static_cast<double>(numOfSetBits) / static_cast<double>(m), k);
   return fpr;
 }
+size_t BloomFilter::getM() const { return m; }
+size_t BloomFilter::getK() const { return k; }
 void BloomFilter::serialize(const std::string &filename) {
   std::ofstream file(filename,std::ios::binary);
   if(!file)throw std::runtime_error("Could not open the file");
@@ -71,5 +73,27 @@ void BloomFilter::serialize(const std::string &filename) {
       }
     }
     file.write(reinterpret_cast<const char *>(&byte),sizeof(byte));
+  }
+}
+void BloomFilter::deserialize(const std::string &filename)
+{
+  std::ifstream file(filename,std::ios::binary);
+  if(!file)throw std::runtime_error("Could not open the file");
+  file.read(reinterpret_cast<char *>(&m),sizeof(m));
+  file.read(reinterpret_cast<char *>(&n),sizeof(n));
+  file.read(reinterpret_cast<char *>(&k),sizeof(k));
+  bit_arr.resize(m, false);
+  size_t numOfBytes = (m + 7) / 8;
+  for(size_t i = 0 ; i < numOfBytes ; i++)
+  {
+    uint8_t byte = 0;
+    file.read(reinterpret_cast<char *>(&byte),sizeof(byte));
+    for(size_t j = 0 ; j <= 7 ; j++)
+    {
+      size_t index = i * 8 + j;
+      if(index < m && (byte & (1 << j))) {
+        bit_arr[index] = true;
+      }
+    }
   }
 }
