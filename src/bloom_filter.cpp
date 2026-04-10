@@ -53,3 +53,23 @@ double BloomFilter::currentFPR()const{
   double fpr = std::pow(static_cast<double>(numOfSetBits) / static_cast<double>(m), k);
   return fpr;
 }
+void BloomFilter::serialize(const std::string &filename) {
+  std::ofstream file(filename,std::ios::binary);
+  if(!file)throw std::runtime_error("Could not open the file");
+  file.write(reinterpret_cast<const char *>(&m),sizeof(m));
+  file.write(reinterpret_cast<const char *>(&n),sizeof(n));
+  file.write(reinterpret_cast<const char *>(&k),sizeof(k));
+  size_t numOfBytes = (m + 7) / 8;
+  for(size_t i = 0 ; i < numOfBytes ; i++)
+  {
+    uint8_t byte = 0;
+    for(size_t j = 0 ; j <= 7 ; j++)
+    {
+      size_t index = i * 8 + j;
+      if(index < m && bit_arr[index]){
+        byte |= (1 << j);
+      }
+    }
+    file.write(reinterpret_cast<const char *>(&byte),sizeof(byte));
+  }
+}
