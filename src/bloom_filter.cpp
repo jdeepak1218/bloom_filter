@@ -1,5 +1,6 @@
 #include"bloom_filter.h"
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include<fstream>
 #include<stdexcept>
@@ -21,8 +22,8 @@ std::vector<uint64_t> BloomFilter::getPositions(const std::string &key){
   MurmurHash3_x64_128(key.c_str(),key.size(),42,hashes);
   uint64_t h1 = hashes[0];
   uint64_t h2 = hashes[1];
-  std::vector<uint64_t>positions();
-  for(int i = 0 ; i < k ; i++)
+  std::vector<uint64_t>positions;
+  for(size_t i = 0 ; i < k ; i++)
   {
     uint64_t pos = (h1 + i * h2) % m;
     positions.push_back(pos);
