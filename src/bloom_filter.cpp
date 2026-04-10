@@ -45,3 +45,11 @@ bool BloomFilter::contains(const std::string &key) const{
   }
   return true;
 }
+double BloomFilter::currentFPR()const{
+  size_t numOfSetBits = 0;
+  for(auto bit : bit_arr){
+    if(bit) numOfSetBits++;
+  }
+  double fpr = std::pow(static_cast<double>(numOfSetBits) / static_cast<double>(m), k);
+  return fpr;
+}

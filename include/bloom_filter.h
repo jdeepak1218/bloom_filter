@@ -18,8 +18,8 @@ class BloomFilter{
   public:
   BloomFilter(size_t n,double p);
   void add(const std::string &key);
-  bool contains(const std::string &key);
-  double currentFPR();
+  bool contains(const std::string &key)const;
+  double currentFPR()const;
   void serialize(const std::string &filename);
   void deserialize(const std::string &filename);
 };
