@@ -2,4 +2,6 @@ build/
 *.o
 *.a
 *.out
+*.bin
+*.exe
 .DS_Store
