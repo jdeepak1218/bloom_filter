@@ -15,6 +15,20 @@ BloomFilter::BloomFilter(size_t n,double p){
   k = computeK(m,n);
   bit_arr.resize(m,false);
 }
+BloomFilter::BloomFilter(BloomFilter&& other) noexcept
+    : p(other.p),
+      bit_arr(std::move(other.bit_arr)),
+      m(other.m),
+      k(other.k),
+      n(other.n) {}
+BloomFilter& BloomFilter::operator=(BloomFilter&& other) noexcept {
+  p = other.p;
+  bit_arr = std::move(other.bit_arr);
+  m = other.m;
+  k = other.k;
+  n = other.n;
+  return *this;
+}
 size_t BloomFilter::computeM(size_t n,double p){
   return static_cast<size_t>(std::ceil(-static_cast<double>(n) * std::log(p) / (std::log(2) * std::log(2))));
 }
