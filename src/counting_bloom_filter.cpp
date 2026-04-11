@@ -1,4 +1,5 @@
-#include"bloom_filter.h"
+#include "bloom_filter.h"
+#include "counting_bloom_filter.h"
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
