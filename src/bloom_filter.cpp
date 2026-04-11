@@ -5,6 +5,8 @@
 #include<fstream>
 #include<stdexcept>
 BloomFilter::BloomFilter(size_t n,double p){
+  if(n < 0)throw std::invalid_argument("n must be non negative");
+  if(p <0 || p > 1) throw std::invalid_argument("p must lie in range 0 to 1");
   this->n = n;
   this->p = p;
   m = computeM(n,p);
