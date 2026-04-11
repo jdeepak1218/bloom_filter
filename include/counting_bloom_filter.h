@@ -18,7 +18,7 @@ class CountingBloomFilter{
   std::vector<uint64_t> getPositions(const std::string &key) const;
 
   public:
-  BloomFilter(size_t n,double p);
+  CountingBloomFilter(size_t n,double p);
   void add(const std::string &key);
   bool contains(const std::string &key)const;
   double currentFPR()const;
