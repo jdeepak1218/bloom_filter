@@ -11,7 +11,8 @@ add_library(bloom_lib
     src/scalable_bloom_filter.cpp
 )
 target_include_directories(bloom_lib PUBLIC include)
-
+add_executable(url_checker src/url_checker.cpp)
+target_link_libraries(url_checker bloom_lib)
 add_executable(test_bloom tests/test_bloom.cpp)
 target_link_libraries(test_bloom bloom_lib)
 
