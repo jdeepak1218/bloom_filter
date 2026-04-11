@@ -13,3 +13,6 @@ target_include_directories(bloom_lib PUBLIC include)
 
 add_executable(test_bloom tests/test_bloom.cpp)
 target_link_libraries(test_bloom bloom_lib)
+
+add_executable(bench benchmarks/bench.cpp)
+target_link_libraries(bench bloom_lib benchmark::benchmark)
