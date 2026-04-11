@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     std::ifstream binCheck("data/malicious_filter.bin");
     bool cacheExists = binCheck.good();
     binCheck.close();
-    if(cacheExists) {]
+    if(cacheExists) {
         auto loadStart = std::chrono::high_resolution_clock::now();
         filter.deserialize("data/malicious_filter.bin");
         auto loadEnd = std::chrono::high_resolution_clock::now();
