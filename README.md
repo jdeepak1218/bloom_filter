@@ -412,4 +412,8 @@ MIT License — feel free to use this code in your own projects.
 
 ---
 
-> 📝 **Transparency Note:** This README was written with the assistance of [Claude](https://claude.ai) (Anthropic's AI assistant). The code, architecture decisions, implementation, debugging, and all technical work was done by the developer. Claude was used as a teaching and writing aid throughout the project.
+>  **Transparency Note:** This project was built by me as a learning exercise 
+> in systems programming and probabilistic data structures. I used 
+> [Claude](https://claude.ai) (Anthropic's AI assistant) as a learning companion 
+> throughout — to understand concepts like double hashing, thread safety, and 
+> serialization, and to get feedback on my code.
