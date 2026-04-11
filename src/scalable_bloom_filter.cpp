@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <cstdint>
 #include<fstream>
-#include <internal_split_ordered_list.h>
 #include <mutex>
 #include <shared_mutex>
 #include<stdexcept>
@@ -14,7 +13,7 @@ ScalableBloomFilter::ScalableBloomFilter(size_t n,double p){
   initialN = n;
   initialP = p;
   growthFactor = 2;
-  tightRaio = 0.85;
+  tightRatio = 0.85;
   insertionCount = 0;
   currentCapacity = n;
   filters.emplace_back(n,p);

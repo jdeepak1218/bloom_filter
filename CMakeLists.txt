@@ -8,6 +8,7 @@ add_library(bloom_lib
     src/bloom_filter.cpp
     src/murmur3.cpp
     src/counting_bloom_filter.cpp
+    src/scalable_bloom_filter.cpp
 )
 target_include_directories(bloom_lib PUBLIC include)
 
