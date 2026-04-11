@@ -259,7 +259,7 @@ Bitcoin nodes use Bloom Filters to efficiently sync transactions between peers w
 
 ---
 
-##🔧 Hashing Strategy
+## Hashing Strategy
 
 This project uses **MurmurHash3** exclusively — specifically `MurmurHash3_x64_128` which produces 128-bit output.
 
