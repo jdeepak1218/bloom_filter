@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 #include<fstream>
+#include <mutex>
+#include <shared_mutex>
 #include<stdexcept>
 BloomFilter::BloomFilter(size_t n,double p){
   if(n == 0)throw std::invalid_argument("n must be non negative");
@@ -34,12 +36,14 @@ std::vector<uint64_t> BloomFilter::getPositions(const std::string &key) const{
 }
 void BloomFilter::add(const std::string &key){
   std::vector<uint64_t> positions = getPositions(key);
+  std::unique_lock<std::shared_mutex>lock(mutex_);
   for(auto pos : positions){
     bit_arr[pos] = true;
   }
 }
 bool BloomFilter::contains(const std::string &key) const{
   std::vector<uint64_t> positions = getPositions(key);
+  std::shared_lock<std::shared_mutex>lock(mutex_);
   for(auto pos : positions){
     if(!bit_arr[pos]){
       return false;
@@ -48,6 +52,7 @@ bool BloomFilter::contains(const std::string &key) const{
   return true;
 }
 double BloomFilter::currentFPR()const{
+  std::shared_lock<std::shared_mutex> lock(mutex_);
   size_t numOfSetBits = 0;
   for(auto bit : bit_arr){
     if(bit) numOfSetBits++;
@@ -58,6 +63,7 @@ double BloomFilter::currentFPR()const{
 size_t BloomFilter::getM() const { return m; }
 size_t BloomFilter::getK() const { return k; }
 void BloomFilter::serialize(const std::string &filename) {
+  std::shared_lock<std::shared_mutex> lock(mutex_);
   std::ofstream file(filename,std::ios::binary);
   if(!file)throw std::runtime_error("Could not open the file");
   file.write(reinterpret_cast<const char *>(&m),sizeof(m));
@@ -79,6 +85,7 @@ void BloomFilter::serialize(const std::string &filename) {
 }
 void BloomFilter::deserialize(const std::string &filename)
 {
+  std::unique_lock<std::shared_mutex> lock(mutex_);
   std::ifstream file(filename,std::ios::binary);
   if(!file)throw std::runtime_error("Could not open the file");
   file.read(reinterpret_cast<char *>(&m),sizeof(m));

@@ -2,12 +2,14 @@
 #include "murmur3.h"
 #include <cstddef>
 #include <vector>
+#include<shared_mutex>
 #include <string>
 #include <cstdint>
 class BloomFilter{
   private:
   double p;
   std::vector<bool> bit_arr;
+  mutable std::shared_mutex mutex_;
   size_t m;
   size_t k;
   size_t n;
