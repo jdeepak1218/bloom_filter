@@ -398,7 +398,6 @@ cmake --build . --config Release
 ##  References
 
 - [Space/Time Trade-offs in Hash Coding with Allowable Errors](https://dl.acm.org/doi/10.1145/362686.362692) — Burton Bloom's original 1970 paper
-- [Summary Cache: A Scalable Wide-Area Web Cache Sharing Protocol](https://www.cs.cmu.edu/~dga/papers/bloom-imc2001.pdf) — Fan et al., introduced Counting Bloom Filter
 - [Scalable Bloom Filters](https://www.sciencedirect.com/science/article/pii/S0020019006003127) — Almeida et al., introduced Scalable Bloom Filter
 - [MurmurHash3](https://github.com/aappleby/smhasher) — Austin Appleby's reference implementation
 - [URLhaus](https://urlhaus.abuse.ch) — Malicious URL database used in this project
