@@ -20,6 +20,8 @@ class BloomFilter{
   public:
   BloomFilter(size_t n,double p);
   void add(const std::string &key);
+  BloomFilter(BloomFilter&& other) noexcept;
+  BloomFilter& operator=(BloomFilter&& other) noexcept;
   bool contains(const std::string &key)const;
   double currentFPR()const;
   size_t getM() const;
