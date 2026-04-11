@@ -77,12 +77,12 @@ static void BM_CountingBloomFilter_Contains(benchmark::State& state) {
 }
 BENCHMARK(BM_CountingBloomFilter_Contains);
 static void BM_CountingBloomFilter_Remove(benchmark::State& state) {
+    CountingBloomFilter cbf(50000, 0.09);
+    for (size_t i = 0; i < 50000; i++) cbf.add(WORDS[i]);
     size_t i = 0;
     for (auto _ : state) {
-        state.PauseTiming();
-        CountingBloomFilter cbf(50000, 0.09);
-        for (size_t j = 0; j < 50000; j++) cbf.add(WORDS[j]);
-        state.ResumeTiming();
+        // add and remove same word — keeps counter stable
+        cbf.add(WORDS[i % 50000]);
         cbf.remove(WORDS[i % 50000]);
         benchmark::ClobberMemory();
         i++;
