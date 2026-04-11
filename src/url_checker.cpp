@@ -29,9 +29,9 @@ int main(int argc, char* argv[]) {
         double loadTime = std::chrono::duration<double, std::milli>(loadEnd - loadStart).count();
         std::cout << "Filter loaded from cache in " << loadTime << " ms\n\n";
     } else {
-        std::ifstream file("data/malicious_urls.txt");
+        std::ifstream file("data/malicious_url.txt");
         if(!file) {
-            std::cerr << "Could not open data/malicious_urls.txt\n";
+            std::cerr << "Could not open data/malicious_url.txt\n";
             return 1;
         }
         size_t count = 0;
