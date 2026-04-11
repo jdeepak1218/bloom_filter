@@ -5,10 +5,10 @@
 #include<shared_mutex>
 #include <string>
 #include <cstdint>
-class BloomFilter{
+class CountingBloomFilter{
   private:
   double p;
-  std::vector<uint16_t> count_arr;
+  std::vector<uint8_t> count_arr;
   mutable std::shared_mutex mutex_;
   size_t m;
   size_t k;
