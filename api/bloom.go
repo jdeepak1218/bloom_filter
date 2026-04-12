@@ -39,7 +39,7 @@ func (bf *BloomFilter) getPositions(key string) []uint64{
 func (bf *BloomFilter) Add(key string){
 	positions := bf.getPositions(key)
 	bf.mu.Lock()
-	defer bf.mu.unlock()
+	defer bf.mu.Unlock()
 	for _,idx := range positions{
 		bf.bitArr[idx] = true;
 	}
@@ -66,12 +66,12 @@ func (bf *BloomFilter) CurrentFPR() float64{
 		}
 	}
 	ratio := float64(bitsSet) / float64(bf.m)
-	fpr := math.Pow(ratio,bf.k)
+	fpr := math.Pow(ratio,float64(bf.k))
 	return fpr
 }
 func (bf *BloomFilter) Serialize(filename string)error{
 	bf.mu.RLock()
-	defer bf.mu.RUnlock
+	defer bf.mu.RUnlock()
 	file,err := os.Create(filename)
 	if err != nil {
 		return err;
