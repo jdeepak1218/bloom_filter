@@ -23,13 +23,13 @@ func NewBloomFilter(n uint64,p float64) *BloomFilter{
 		m: uint64(m),
 		k: uint64(k),
 		n: n,
-		p: p;
-		count: 0;
+		p: p,
+		count: 0,
 	}
 }
 func (bf *BloomFilter) getPositions(key string) []uint64{
-	h1 := murmur3.sum64WithSeed([]byte(key),0)
-	h2 := murmur3.sum64WithSeed([]byte(key),1)
+	h1 := murmur3.Sum64WithSeed([]byte(key),0)
+	h2 := murmur3.Sum64WithSeed([]byte(key),1)
 	positions := make([]uint64,bf.k)
 	for i := uint64(0) ; i < bf.k ; i++{
 		positions[i] = (h1 + i * h2) % bf.m
@@ -38,14 +38,14 @@ func (bf *BloomFilter) getPositions(key string) []uint64{
 }
 func (bf *BloomFilter) Add(key string){
 	positions := bf.getPositions(key)
-	bf.mu.lock()
+	bf.mu.Lock()
 	defer bf.mu.unlock()
 	for _,idx := range positions{
 		bf.bitArr[idx] = true;
 	}
 	bf.count++;
 }
-func (bf *BloomFilter) Contains(string key) bool {
+func (bf *BloomFilter) Contains(key string) bool {
 	positions := bf.getPositions(key)
 	bf.mu.RLock()
 	defer bf.mu.RUnlock()
@@ -57,8 +57,8 @@ func (bf *BloomFilter) Contains(string key) bool {
 	return true;
 }
 func (bf *BloomFilter) CurrentFPR() float64{
-	bf.mu.RLock
-	defer bf.mu.RUnlock
+	bf.mu.RLock()
+	defer bf.mu.RUnlock()
 	var bitsSet uint64 = 0
 	for i := uint64(0) ; i < bf.m ; i++{
 		if bf.bitArr[i]{
