@@ -26,7 +26,7 @@ type StatsResponse struct {
 	TotalURLs      int     `json:"total_urls"`
 	FilterSizeKb   uint64  `json:"filter_size_kb"`
 	FPR            float64 `json:"fpr"`
-	FilterCapacity int     `json:"filter_capacity"`
+	FilterCapacity uint64  `json:"filter_capacity"`
 	HashFunction   uint64  `json:"hash_function"`
 }
 
