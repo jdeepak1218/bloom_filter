@@ -16,18 +16,17 @@ import (
 )
 
 type CheckResponse struct {
-	URL       string  `json:"url"`
-	Safe      bool    `json:"safe"`
-	Message   string  `json:"message"`
-	FPR       float64 `json:"fpr"`
-	CheckTime int64   `json:"check_time"`
+	URL         string  `json:"url"`
+	Safe        bool    `json:"safe"`
+	Message     string  `json:"message"`
+	FPR         float64 `json:"fpr"`
+	CheckTimeNs int64   `json:"checkTimeNs"`
 }
 type StatsResponse struct {
-	TotalURLs      int     `json:"total_urls"`
-	FilterSizeKb   uint64  `json:"filter_size_kb"`
+	TotalURLs      int     `json:"totalUrls"`
+	FilterSizeKB   uint64  `json:"filterSizeKB"`
 	FPR            float64 `json:"fpr"`
-	FilterCapacity uint64  `json:"filter_capacity"`
-	HashFunction   uint64  `json:"hash_function"`
+	FilterCapacity uint64  `json:"filterCapacity"`
 }
 
 func normalizeURL(url string) string {
@@ -62,7 +61,7 @@ func checkHandler(filter *BloomFilter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Query().Get("url")
 		if url == "" {
-			http.Error(w, "url paramter requied", http.StatusBadRequest)
+			http.Error(w, "url parameter required", http.StatusBadRequest)
 			return
 		}
 		url = normalizeURL(url)
@@ -74,11 +73,11 @@ func checkHandler(filter *BloomFilter) http.HandlerFunc {
 			message = "Found in malicious database"
 		}
 		response := CheckResponse{
-			URL:       url,
-			Safe:      safe,
-			Message:   message,
-			FPR:       filter.CurrentFPR(),
-			CheckTime: checkTime,
+			URL:         url,
+			Safe:        safe,
+			Message:     message,
+			FPR:         filter.CurrentFPR(),
+			CheckTimeNs: checkTime,
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(response)
@@ -88,10 +87,9 @@ func statsHandler(filter *BloomFilter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := StatsResponse{
 			TotalURLs:      int(filter.count),
-			FilterSizeKb:   filter.m / 8 / 1024,
+			FilterSizeKB:   filter.m / 8 / 1024,
 			FPR:            filter.CurrentFPR(),
 			FilterCapacity: filter.n,
-			HashFunction:   filter.k,
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(response)
@@ -109,13 +107,16 @@ func main() {
 	} else {
 		filter = NewBloomFilter(70000, 0.01)
 		start := time.Now()
-		count, err := loadURLs(filter, "data/malicious_urls.txt")
+		count, err := loadURLs(filter, "data/malicious_url.txt")
 		if err != nil {
 			log.Fatal(err)
 		}
 		elapsed := time.Since(start)
 		fmt.Printf("Loaded %d URLs in %s\n", count, elapsed)
-		filter.Serialize("data/malicious_filter.bin")
+		err = filter.Serialize("data/malicious_filter.bin")
+		if err != nil {
+			log.Fatal(err)
+		}
 		fmt.Println("Bloom filter cached")
 	}
 	r := chi.NewRouter()
@@ -128,6 +129,6 @@ func main() {
 	}))
 	r.Get("/check", checkHandler(filter))
 	r.Get("/stats", statsHandler(filter))
-	fmt.Println("Server started on : 8080")
-	http.ListenAndServe(":8080", r)
+	fmt.Println("Server started on :8081")
+	http.ListenAndServe(":8081", r)
 }

@@ -93,6 +93,9 @@ func (bf *BloomFilter) Serialize(filename string) error {
 	if err := binary.Write(file, binary.LittleEndian, bf.p); err != nil {
 		return err
 	}
+	if err := binary.Write(file, binary.LittleEndian, bf.count); err != nil {
+		return err
+	}
 	numBytes := (bf.m + 7) / 8
 	for i := uint64(0); i < numBytes; i++ {
 		var byteVal uint8 = 0
@@ -117,6 +120,7 @@ func Deserialize(filename string) (*BloomFilter, error) {
 	binary.Read(file, binary.LittleEndian, &bf.n)
 	binary.Read(file, binary.LittleEndian, &bf.k)
 	binary.Read(file, binary.LittleEndian, &bf.p)
+	binary.Read(file, binary.LittleEndian, &bf.count)
 	bf.bitArr = make([]bool, bf.m)
 	numBytes := (bf.m + 7) / 8
 	for i := uint64(0); i < numBytes; i++ {
