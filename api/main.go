@@ -133,5 +133,5 @@ func main() {
 	if port == "" {
 		port = "8081"
 	}
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+port, r)
 }
