@@ -129,6 +129,9 @@ func main() {
 	}))
 	r.Get("/check", checkHandler(filter))
 	r.Get("/stats", statsHandler(filter))
-	fmt.Println("Server started on :8081")
-	http.ListenAndServe(":8081", r)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+	http.ListenAndServe(":"+port, nil)
 }
